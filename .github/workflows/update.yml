@@ -1,0 +1,44 @@
+name: Update _posts from Modify
+on:
+  workflow_dispatch:
+    inputs:
+      refresh_token:
+        description: Modify refresh token
+        required: true
+      job_instance_id:
+        description: ID of Job Instance to notify
+      team:
+        description: Team slug
+        required: true
+      workspace:
+        description: Workspace slug
+        required: true
+      workspace_branch:
+        description: Workspace branch slug
+        required: true
+        default: master
+      connector:
+        description: Connector slug
+        required: true
+        default: docs
+      connector_path:
+        description: Connector path
+        required: true
+        default: /jekyll/
+  repository_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Update posts
+        run: ./update_posts.sh
+        env:
+          REFRESH_TOKEN: ${{ github.event.inputs.refresh_token}}
+          JOB_INSTANCE_ID: ${{ github.event.inputs.job_instance_id}}
+          TEAM: ${{ github.event.inputs.team}}
+          WORKSPACE: ${{ github.event.inputs.workspace}}
+          WORKSPACE_BRANCH: ${{ github.event.inputs.workspace_branch}}
+          CONNECTOR: ${{ github.event.inputs.connector}}
+          CONNECTOR_PATH: ${{ github.event.inputs.connector_path}}
+
