@@ -2,6 +2,8 @@
 
 MODIFY_API_URL=https://develop.ci.modify.lfrg.dev
 MODIFY_API_KEY=AIzaSyA1XfnPJ4XNTT94qAU3z6c1taYMhkykoWA
+#MODIFY_API_URL=https://app.modifyhq.com
+#MODIFY_API_KEY=AIzaSyAUmlhpu52XymA7IjSfeProj0mD_Zp6HI8
 
 # Get ID token to authenticate with Modify
 echo "Fetching ID token"
