@@ -7,17 +7,17 @@ on:
         required: true
       job_instance_id:
         description: ID of Job Instance to notify
-      team:
+      team_slug:
         description: Team slug
         required: true
-      workspace:
+      workspace_slug:
         description: Workspace slug
         required: true
-      workspace_branch:
+      workspace_branch_slug:
         description: Workspace branch slug
         required: true
         default: master
-      connector:
+      connector_slug:
         description: Connector slug
         required: true
         default: docs
@@ -25,7 +25,6 @@ on:
         description: Connector path
         required: true
         default: /jekyll/
-  repository_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,9 +35,9 @@ jobs:
         env:
           REFRESH_TOKEN: ${{ github.event.inputs.refresh_token}}
           JOB_INSTANCE_ID: ${{ github.event.inputs.job_instance_id}}
-          TEAM: ${{ github.event.inputs.team}}
-          WORKSPACE: ${{ github.event.inputs.workspace}}
-          WORKSPACE_BRANCH: ${{ github.event.inputs.workspace_branch}}
-          CONNECTOR: ${{ github.event.inputs.connector}}
+          TEAM_SLUG: ${{ github.event.inputs.team_slug}}
+          WORKSPACE_SLUG: ${{ github.event.inputs.workspace_slug}}
+          WORKSPACE_BRANCH_SLUG: ${{ github.event.inputs.workspace_branch_slug}}
+          CONNECTOR_SLUG: ${{ github.event.inputs.connector_slug}}
           CONNECTOR_PATH: ${{ github.event.inputs.connector_path}}
 

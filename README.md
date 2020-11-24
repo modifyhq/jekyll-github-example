@@ -1,11 +1,11 @@
 # Jekyll Demo
 
-This demo repository is intended to show how to publish Modify managed content to a Jekyll
-repository using Github Pages.
+This demo repository shows how to publish Modify managed content to a Jekyll repository using Github
+Pages.
 
 ## Jekyll
 
-This repository contains a standard Jekyll site setup for hosting on Github Pages.
+This root of the repository contains a standard Jekyll site setup for hosting on Github Pages.
 
 To test it locally you need a working ruby 2.6 environment. We recommend using `rbenv` for this, 
 setup instructions are available at https://github.com/rbenv/rbenv
@@ -31,40 +31,43 @@ This script is designed to be run by Github Actions and will
 
 ## Github Actions
 
-A Github Actions workflow is defined in `.github/workflows/update.yml`. It is designed to be run by
-Modify Jobs, but it can also be run manually from Github Actions UI provided the required `inputs`
-are passed:
+There is a Github Actions workflow defined in `.github/workflows/main.yml` which will be run by
+Modify Jobs. It can also be run manually from Github Actions UI provided the required `inputs` are
+passed:
 
 - `refresh_token`: Modify refresh token
-- `team`: Team slug
-- `workspace`: Workspace slug
-- `workspace_branch`: Workspace branch slug (defaults to `master`)
-- `connector`: Connector slug (defaults to `docs`)
-- `connector_path`: Connector path (defaults to `/`)
+- `team_slug`: Team slug
+- `workspace_slug`: Workspace slug
+- `workspace_branch_slug`: Workspace branch slug (defaults to `master`)
+- `connector_slug`: Connector slug (defaults to `docs`)
+- `connector_path_slug`: Connector path (defaults to `/`)
 
 ## Step 1 - Github configuration
 
-The publish cycle of this setup requires changes to be committed and pushed to Github in order for
-Github Pages to use them. So you need to fork the respository e.g. `my-org/modify-jekyll-demo`
+The publication cycle of this setup requires changes to be committed and pushed to Github in order for
+Github Pages to use them. So you need to fork the repository e.g. `my-org/modify-jekyll-demo`.
 
-To publish the site on Github Pages, go to Settings in your new repository
+Once forked, the workflow will be disabled by default. To enable it, go to `Actions` in the Github
+console and click the `I understand my workflows, go ahead and enable them` button.
+
+To publish the site on Github Pages, go to `Settings` in the Github console
 (https://github.com/healthforge/jekyll-demo/settings) and in the Github Pages section, set:
 - Source to `master`
 - Path to `/` (root)
  
-The site should then be available on https://my-org.github.io/modify-jekyll-demo/
+The site should then be available at https://my-org.github.io/modify-jekyll-demo/
 
-You will need to generate a Github Personal Access Token to allow Modify to trigger the workflow.
-You can do this at https://github.com/settings/tokens. It requires full control of private
-repositories as changes will be committed when updating posts.
+Finally, you will need to generate a Github Personal Access Token to allow Modify to trigger the
+workflow. You can do this at https://github.com/settings/tokens. It requires full control of private
+repositories as changes need to be committed in order to update posts.
 
 ## Step 2 - Setup Modify
 
-The following steps assume you have a Modify team called `my-team`. 
+The following steps assume you have a Modify team with the slug `my-team`. 
 
-Create a new workspace called `jekyll-demo`.
+Create a new workspace with the slug `jekyll-demo`.
 
-Create a new connector in your workspace called `docs` with protected access mode.
+Create a new Modify connector in your workspace with the slug `docs` and protected access mode.
 
 Create a new workspace branch (e.g `develop`) in order to make changes.
 
@@ -92,7 +95,7 @@ In Modify, select the correct team and workspace and go to the Jobs section.
 Click the `Create Job` button and enter the following:
 
 - Name: `Jekyll Demo`
-- Target: `POST https://api.github.com/repos/my-org/modify-jekyll-demo/actions/workflows/update.yml/dispatches`
+- Target: `POST https://api.github.com/repos/my-org/modify-jekyll-demo/actions/workflows/main.yml/dispatches`
 - Headers:
     - `Accept`: `application/vnd.github.v3+json`
 - Payload:
@@ -102,10 +105,10 @@ Click the `Create Job` button and enter the following:
       "inputs": {
         "refresh_token":"{{REFRESH_TOKEN}}",
         "job_instance_id":"{{JOB_INSTANCE_ID}}",
-        "team": "my-team",
-        "workspace": "jekyll-demo",
-        "workspace_branch": "master",
-        "connector": "docs",
+        "team_slug": "my-team",
+        "workspace_slug": "jekyll-demo",
+        "workspace_branch_slug": "master",
+        "connector_slug": "docs",
         "connector_path": "/jekyll/"
       }
     }

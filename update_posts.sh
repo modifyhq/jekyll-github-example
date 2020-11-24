@@ -15,10 +15,10 @@ ID_TOKEN=$( \
 echo "Downloading posts"
 QUERY=$(cat <<EOT
 query {
-  team(slug: \"${TEAM}\") {
-    workspace(slug: \"${WORKSPACE}\") {
-      branch(slug: \"${WORKSPACE_BRANCH}\") {
-        connectorBranch(connectorSlug: \"${CONNECTOR}\") {
+  team(slug: \"${TEAM_SLUG}\") {
+    workspace(slug: \"${WORKSPACE_SLUG}\") {
+      branch(slug: \"${WORKSPACE_BRANCH_SLUG}\") {
+        connectorBranch(connectorSlug: \"${CONNECTOR_SLUG}\") {
           downloadTarballUrl(path: \"${CONNECTOR_PATH}\") {
             value
             error
