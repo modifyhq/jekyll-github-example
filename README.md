@@ -98,7 +98,7 @@ template:
 You will need to complete the following fields:
 
 - Github Owner: `my-org`
-- Github Repository: `jekyll-demo
+- Github Repository: `jekyll-demo`
 
 Next click `+` next to Credentials and enter the following:
 - Name: `Jekyll Demo`
