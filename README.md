@@ -45,7 +45,7 @@ passed:
 ## Step 1 - Github configuration
 
 The publication cycle of this setup requires changes to be committed and pushed to Github in order for
-Github Pages to use them. So you need to fork the repository e.g. `my-org/modify-jekyll-demo`.
+Github Pages to use them. So you need to fork the repository e.g. `my-org/jekyll-demo`.
 
 Once forked, the workflow will be disabled by default. To enable it, go to `Actions` in the Github
 console and click the `I understand my workflows, go ahead and enable them` button.
@@ -55,7 +55,7 @@ To publish the site on Github Pages, go to `Settings` in the Github console
 - Source to `master`
 - Path to `/` (root)
  
-The site should then be available at https://my-org.github.io/modify-jekyll-demo/
+The site should then be available at https://my-org.github.io/jekyll-demo/
 
 Finally, you will need to generate a Github Personal Access Token to allow Modify to trigger the
 workflow. You can do this at https://github.com/settings/tokens. It requires full control of private
@@ -92,27 +92,13 @@ Definition payload in [Step 3](#step-3---create-modify-job) to suit.
 
 In Modify, select the correct team and workspace and go to the Jobs section.
 
-Click the `Create Job` button and enter the following:
+Click the `Create Job` button and and then select the `Tutorial: Publish Jekyll to GitHub Pages`
+template:
 
-- Name: `Jekyll Demo`
-- Target: `POST https://api.github.com/repos/my-org/modify-jekyll-demo/actions/workflows/main.yml/dispatches`
-- Headers:
-    - `Accept`: `application/vnd.github.v3+json`
-- Payload:
-    ```
-    {
-      "ref": "master",
-      "inputs": {
-        "refresh_token":"{{REFRESH_TOKEN}}",
-        "job_instance_id":"{{JOB_INSTANCE_ID}}",
-        "team_slug": "my-team",
-        "workspace_slug": "jekyll-demo",
-        "workspace_branch_slug": "master",
-        "connector_slug": "docs",
-        "connector_path": "/jekyll/"
-      }
-    }
-    ```
+You will need to complete the following fields:
+
+- Github Owner: `my-org`
+- Github Repository: `jekyll-demo
 
 Next click `+` next to Credentials and enter the following:
 - Name: `Jekyll Demo`
@@ -133,5 +119,5 @@ the Github API gateway along with configured credentials, `REFRESH_TOKEN` and `J
 Modify expects the remote system to notify when the job is complete using these details.
 
 When this is complete you should see the Job Instance in Modify change from `Started` to `Finished`,
-and the updated site will be visible at https://my-org.github.io/modify-jekyll-demo/. You should
+and the updated site will be visible at https://my-org.github.io/jekyll-demo/. You should
 also see a commit called `Updating _posts` with changes to the posts.
