@@ -65,11 +65,9 @@ repositories as changes need to be committed in order to update posts.
 
 The following steps assume you have a Modify team with the slug `my-team`. 
 
-Create a new workspace with the slug `jekyll-demo`.
+Create a new workspace with the slug `jekyll-demo` and base branch ID `master`.
 
-Create a new Modify connector in your workspace with the slug `docs` and protected access mode.
-
-Create a new workspace branch (e.g `develop`) in order to make changes.
+Create a new Modify connector in your workspace called `docs` with `Editable` access mode.
 
 Add a file to the connector called `/jekyll/2020-11-11-test-post.md` with the following content:
 ```
@@ -82,8 +80,6 @@ date:   2020-11-11 11:11:11 +0000
 Some text
 ``` 
 and commit your changes.
-
-Use Update Branch to merge your changes back to the root branch (`master`).
 
 If you have an existing connector that you would like to use, then you will need to adjust the Job
 Definition payload in [Step 3](#step-3---create-modify-job) to suit.
