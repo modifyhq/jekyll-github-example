@@ -1,7 +1,7 @@
-# Jekyll Example Job
+# Jekyll Github Example
 
 This example repository is intended to show how to define and run a job that publishes Modify 
-managed content to GitHub Pages using Jekyll and Github Pages for the build. 
+managed content to GitHub Pages using Jekyll and Github Actions for the build. 
 
 ## Jekyll
 
@@ -19,7 +19,7 @@ Serve locally
 ```bash
 bundle exec jekyll serve
 ```
-Site should be accessible on http://127.0.0.1:4000/jekyll-demo/
+Site should be accessible on http://127.0.0.1:4000/jekyll-github-example/
 
 ## `update_posts.sh`
 
@@ -40,22 +40,22 @@ passed:
 - `workspace_slug`: Workspace slug
 - `workspace_branch_slug`: Workspace branch slug (defaults to `master`)
 - `connector_slug`: Connector slug (defaults to `docs`)
-- `connector_path_slug`: Connector path (defaults to `/`)
+- `connector_path_slug`: Connector path (defaults to `/jekyll/`)
 
 ## Step 1 - Github configuration
 
 The publication cycle of this setup requires changes to be committed and pushed to Github in order for
-Github Pages to use them. So you need to fork the repository e.g. `my-org/jekyll-example-job`.
+Github Pages to use them. So you need to fork the repository e.g. `my-org/jekyll-github-example`.
 
 Once forked, the workflow will be disabled by default. To enable it, go to `Actions` in the Github
 console and click the `I understand my workflows, go ahead and enable them` button.
 
 To publish the site on Github Pages, go to `Settings` in the Github console
-(https://github.com/modifyhq/jekyll-example-job/settings) and in the Github Pages section, set:
+(https://github.com/my-org/jekyll-github-example/settings) and in the Github Pages section, set:
 - Source to `master`
 - Path to `/` (root)
  
-The site should then be available at https://my-org.github.io/jekyll-example-job/
+The site should then be available at https://my-org.github.io/jekyll-github-example/
 
 Finally, you will need to generate a Github Personal Access Token to allow Modify to trigger the
 workflow. You can do this at https://github.com/settings/tokens. It requires full control of private
@@ -65,7 +65,7 @@ repositories as changes need to be committed in order to update posts.
 
 The following steps assume you have a Modify team with the slug `my-team`. 
 
-Create a new workspace with the slug `jekyll-example-job` and base branch ID `master`.
+Create a new workspace with the slug `jekyll-github-example` and base branch ID `master`.
 
 Create a new Modify connector in your workspace called `docs` with `Editable` access mode.
 
@@ -94,10 +94,10 @@ template:
 You will need to complete the following fields:
 
 - Github Owner: `my-org`
-- Github Repository: `jekyll-example-job`
+- Github Repository: `jekyll-github-example`
 
 Next click `+` next to Credentials and enter the following:
-- Name: `Jekyll Example Job`
+- Name: `Jekyll Github Example`
 - Username: `<Github username>`
 - Password: `<Github personal access token>`
 
@@ -115,5 +115,5 @@ the Github API gateway along with configured credentials, `REFRESH_TOKEN` and `J
 Modify expects the remote system to notify when the job is complete using these details.
 
 When this is complete you should see the Job Instance in Modify change from `Started` to `Finished`,
-and the updated site will be visible at https://my-org.github.io/jekyll-example-job/. You should
+and the updated site will be visible at https://my-org.github.io/jekyll-github-example/. You should
 also see a commit called `Updating _posts` with changes to the posts.

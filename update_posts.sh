@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-MODIFY_API_URL=https://app.modifyhq.com
+MODIFY_API_URL=https://api.modifyhq.com
 MODIFY_API_KEY=AIzaSyAUmlhpu52XymA7IjSfeProj0mD_Zp6HI8
 
 # Get ID token to authenticate with Modify
@@ -19,10 +19,7 @@ query {
     workspace(slug: \"${WORKSPACE_SLUG}\") {
       branch(slug: \"${WORKSPACE_BRANCH_SLUG}\") {
         connectorBranch(connectorSlug: \"${CONNECTOR_SLUG}\") {
-          downloadTarballUrl(path: \"${CONNECTOR_PATH}\") {
-            value
-            error
-          }
+          downloadTarballUrl(path: \"${CONNECTOR_PATH}\")
         }
       }
     }
@@ -36,7 +33,7 @@ DOWNLOAD_URL=$( \
   -H "Authorization: Bearer ${ID_TOKEN}" \
   -H 'Content-Type: application/json' \
   --data "{\"query\": \"$(echo $QUERY)\"}" \
-  | jq -r '.data.team.workspace.branch.connectorBranch.downloadTarballUrl.value')
+  | jq -r '.data.team.workspace.branch.connectorBranch.downloadTarballUrl')
 curl "${MODIFY_API_URL}${DOWNLOAD_URL}" \
   -H "Authorization: Bearer ${ID_TOKEN}" \
   --output "${RUNNER_TEMP}/modify_files.tar"
