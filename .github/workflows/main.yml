@@ -2,9 +2,6 @@ name: Update _posts from Modify
 on:
   workflow_dispatch:
     inputs:
-      refresh_token:
-        description: Modify refresh token
-        required: true
       job_instance_id:
         description: ID of Job Instance to notify
       team_slug:
@@ -33,7 +30,8 @@ jobs:
       - name: Update posts
         run: ./update_posts.sh
         env:
-          REFRESH_TOKEN: ${{ github.event.inputs.refresh_token}}
+          MODIFY_CLIENT_ID: ${{ secrets.MODIFY_CLIENT_ID }}
+          MODIFY_CLIENT_SECRET: ${{ secrets.MODIFY_CLIENT_SECRET }}
           JOB_INSTANCE_ID: ${{ github.event.inputs.job_instance_id}}
           TEAM_SLUG: ${{ github.event.inputs.team_slug}}
           WORKSPACE_SLUG: ${{ github.event.inputs.workspace_slug}}

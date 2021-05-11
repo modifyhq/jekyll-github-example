@@ -35,7 +35,6 @@ There is a Github Actions workflow defined in `.github/workflows/main.yml` which
 Modify Jobs. It can also be run manually from Github Actions UI provided the required `inputs` are
 passed:
 
-- `refresh_token`: Modify refresh token
 - `team_slug`: Team slug
 - `workspace_slug`: Workspace slug
 - `workspace_branch_slug`: Workspace branch slug (defaults to `master`)
@@ -44,12 +43,14 @@ passed:
 
 ## Step 1 - Github configuration
 
+### Fork
 The publication cycle of this setup requires changes to be committed and pushed to Github in order for
 Github Pages to use them. So you need to fork the repository e.g. `my-org/jekyll-github-example`.
 
 Once forked, the workflow will be disabled by default. To enable it, go to `Actions` in the Github
 console and click the `I understand my workflows, go ahead and enable them` button.
 
+### Pages
 To publish the site on Github Pages, go to `Settings` in the Github console
 (https://github.com/my-org/jekyll-github-example/settings) and in the Github Pages section, set:
 - Source to `master`
@@ -57,6 +58,15 @@ To publish the site on Github Pages, go to `Settings` in the Github console
  
 The site should then be available at https://my-org.github.io/jekyll-github-example/
 
+### Secrets
+Github fetches posts from Modify using service account credentials for your team. You will find these
+in the `Service Accounts` page in your team settings e.g. https://app.modifyhq.com/#/my-team/settings/keys.
+
+Create a new `Actions Secret` for both the `Client ID` and `Client Secret` in Github settings
+(https://github.com/my-org/jekyll-github-example/settings/secrets/actions/new), naming the secrets
+`MODIFY_CLIENT_ID` and `MODIFY_CLIENT_SECRET` respectively.
+
+### Personal Access Token
 Finally, you will need to generate a Github Personal Access Token to allow Modify to trigger the
 workflow. You can do this at https://github.com/settings/tokens. It requires full control of private
 repositories as changes need to be committed in order to update posts.
@@ -111,7 +121,7 @@ Click the name of the new Job Definition to display the details.
 ## Step 4 - Run the Modify Job
 
 Click `Start` to run the Job and a new Job Instance will be created. This will `POST` the payload to
-the Github API gateway along with configured credentials, `REFRESH_TOKEN` and `JOB_INSTANCE_ID`.
+the Github API gateway along with configured credentials and `JOB_INSTANCE_ID`.
 Modify expects the remote system to notify when the job is complete using these details.
 
 When this is complete you should see the Job Instance in Modify change from `Started` to `Finished`,
