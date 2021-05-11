@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 
-MODIFY_API_URL=https://api.modifyhq.com
-MODIFY_API_KEY=AIzaSyAUmlhpu52XymA7IjSfeProj0mD_Zp6HI8
+MODIFY_API_URL=${MODIFY_API_URL:-https://api.modifyhq.com}
 
 # Get ID token to authenticate with Modify
-echo "Fetching ID token"
-ID_TOKEN=$( \
-  curl "https://securetoken.googleapis.com/v1/token?key=${MODIFY_API_KEY}" \
+echo "Fetching access token"
+CREDENTIALS=$(echo -n "${MODIFY_CLIENT_ID}:${MODIFY_CLIENT_SECRET}" | openssl base64 -A)
+ACCESS_TOKEN=$(curl "${MODIFY_API_URL}/oauth/token" \
+  -H "Authorization: Basic ${CREDENTIALS}" \
   -H 'Content-Type: application/x-www-form-urlencoded' \
-  --data "grant_type=refresh_token&refresh_token=${REFRESH_TOKEN}" \
-  | jq -r '.id_token')
+  --data "grant_type=client_credentials" \
+  | jq -r '.access_token')
+AUTH_HEADER="Authorization: Bearer ${ACCESS_TOKEN}"
 
 # Download files
 echo "Downloading posts"
@@ -27,15 +28,13 @@ query {
 }
 EOT
 )
-DOWNLOAD_URL=$( \
-  curl "${MODIFY_API_URL}/graphql" \
-  -X POST \
-  -H "Authorization: Bearer ${ID_TOKEN}" \
+DOWNLOAD_URL=$(curl "${MODIFY_API_URL}/graphql" \
+  -H "${AUTH_HEADER}" \
   -H 'Content-Type: application/json' \
   --data "{\"query\": \"$(echo $QUERY)\"}" \
   | jq -r '.data.team.workspace.branch.connectorBranch.downloadTarballUrl')
 curl "${MODIFY_API_URL}${DOWNLOAD_URL}" \
-  -H "Authorization: Bearer ${ID_TOKEN}" \
+  -H "${AUTH_HEADER}" \
   --output "${RUNNER_TEMP}/modify_files.tar"
 
 # Update posts
@@ -70,8 +69,7 @@ EOT
 if [[ -n "${JOB_INSTANCE_ID}" ]]; then
   echo "Notifying Modify Jobs"
   curl "${MODIFY_API_URL}/graphql" \
-    -X POST \
-    -H "Authorization: Bearer ${ID_TOKEN}" \
+    -H "${AUTH_HEADER}" \
     -H 'Content-Type: application/json' \
     --data "{\"query\": \"$(echo $MUTATION)\"}"
 fi
